@@ -14,5 +14,33 @@
     <packaging>jar</packaging>
 
 
+    <dependencies>
+
+        <!--############################# interne Dependencies ########################################### -->
+
+        <dependency>
+            <groupId>at.boot</groupId>
+            <artifactId>dataaccess</artifactId>
+        </dependency>
+
+
+        <!--#############################  Dependencies ################################################## -->
+
+        <!-- Jakarta Bean Validation -->
+        <dependency>
+            <groupId>jakarta.validation</groupId>
+            <artifactId>jakarta.validation-api</artifactId>
+        </dependency>
+
+        <!-- Lombok -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+
+
+    </dependencies>
+
+
 
 </project>
