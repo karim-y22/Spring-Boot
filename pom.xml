@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>at.boot</groupId>
+    <artifactId>my_project</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>dataaccess</module>
+        <module>rest</module>
+        <module>dtos</module>
+        <module>service</module>
+    </modules>
+
+    <distributionManagement>
+        <repository>
+            <id>releases</id>
+            <url>http://localhost:8081/repository/maven-releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>snapshots</id>
+            <url>http://localhost:8081/repository/maven-snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
+
+    <properties>
+        <java.version>21</java.version>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <!-- Versions für Dependencies zentral -->
+        <jakarta.jpa.version>3.1.0</jakarta.jpa.version>
+        <hibernate.version>6.2.11.Final</hibernate.version>
+        <ojdbc.version>21.10.0.0</ojdbc.version>
+
+        <lombok.version>1.18.30</lombok.version>
+        <google.api.client.version>2.3.0</google.api.client.version>
+        <jakarta.validation.version>3.0.2</jakarta.validation.version>
+        <jjwt.version>0.12.6</jjwt.version>
+        <jbcrypt.version>0.4</jbcrypt.version>
+        <jakarta.mail.version>2.0.1</jakarta.mail.version>
+
+        <junit.jupiter.version>5.9.3</junit.jupiter.version>
+        <assertj.core.version>3.24.2</assertj.core.version>
+        <mockito.core.version>5.11.0</mockito.core.version>
+
+        <spring.version>6.0.12</spring.version>
+        <spring.data.jpa.version>3.1.1</spring.data.jpa.version>
+        <spring.security.version>6.2.3</spring.security.version>
+
+        <spring-boot.version>3.3.0</spring-boot.version>
+
+
+    </properties>
+
+
+    <dependencyManagement>
+
+        <!-- Spring Boot Parent -->
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+
+        <!--############################# interne Dependencies ################################################## -->
+
+
+
+
+
+
+    </dependencyManagement>
+
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                    <version>${spring-boot.version}</version>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>repackage</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+
+</project>
