@@ -34,7 +34,7 @@ public class AuthService {
     public User register(User user) {
         user.setPassword(encoder.encode(user.getPassword()));
         user.setRole(Role.ROLE_USER);
-        user.setEmail("beispiel@example.com");
+        user.setEmail("yassin@example.com");
         return userRepository.saveNew(user);
     }
 

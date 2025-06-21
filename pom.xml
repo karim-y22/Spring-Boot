@@ -177,6 +177,12 @@
                 <groupId>com.google.api-client</groupId>
                 <artifactId>google-api-client</artifactId>
                 <version>${google.api.client.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>commons-logging</groupId>
+                        <artifactId>commons-logging</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
 
 
@@ -197,12 +203,12 @@
                 <version>${spring.version}</version>
             </dependency>
 
-            <!-- Spring Data JPA -->
-            <dependency>
-                <groupId>org.springframework.data</groupId>
-                <artifactId>spring-data-jpa</artifactId>
-                <version>${spring.data.jpa.version}</version>
-            </dependency>
+<!--            &lt;!&ndash; Spring Data JPA &ndash;&gt;-->
+<!--            <dependency>-->
+<!--                <groupId>org.springframework.data</groupId>-->
+<!--                <artifactId>spring-data-jpa</artifactId>-->
+<!--                <version>${spring.data.jpa.version}</version>-->
+<!--            </dependency>-->
 
             <dependency>
                 <groupId>org.springframework.security</groupId>
