@@ -16,3 +16,5 @@ target/
 .DS_Store
 
 rest/src/main/resources/application.properties
+rest/src/main/resources/application-dev.properties
+rest/src/main/resources/application-prod.properties

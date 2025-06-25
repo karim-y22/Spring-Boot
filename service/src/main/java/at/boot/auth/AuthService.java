@@ -34,11 +34,15 @@ public class AuthService {
     public User register(User user) {
         user.setPassword(encoder.encode(user.getPassword()));
         user.setRole(Role.ROLE_USER);
-        user.setEmail("yassin@example.com");
+        String generatedEmail = generateRandomEmail(user.getUsername());
+        user.setEmail(generatedEmail);
         return userRepository.saveNew(user);
     }
 
-
+    private String generateRandomEmail(String username) {
+        String domain = "example.com";
+        return username.toLowerCase() + "@" + domain;
+    }
     public LoginResponse verify(LoginRequest loginRequest) {
         try {
             Authentication authenticate = authenticationManager.authenticate(
