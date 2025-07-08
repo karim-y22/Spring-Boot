@@ -1,7 +1,9 @@
 package at.boot.auth;
 
 import at.boot.enums.Role;
+import at.boot.exceptions.EmailNotConfirmedException;
 import at.boot.jwt.JWTService;
+import at.boot.mail.MailService;
 import at.boot.models.User;
 import at.boot.repositories.UserRepository;
 import at.boot.requests.LoginRequest;
@@ -18,6 +20,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class AuthService {
@@ -29,6 +33,9 @@ public class AuthService {
 
     @Autowired
     private JWTService jwtService;
+
+    @Autowired
+    MailService mailService;
 
     @Autowired
     private BCryptPasswordEncoder encoder;
@@ -48,13 +55,46 @@ public class AuthService {
                 .tstamp(LocalDateTime.now())
                 .build();
 
-        return userRepository.saveNew(user);
+        // Token, Bestätigung setzen
+        String token = UUID.randomUUID().toString();
+        user.setConfirmed(false);
+        user.setConfirmationToken(token);
+
+        // Speichern
+        userRepository.saveNew(user);
+
+        // Bestätigungsmail senden
+        mailService.sendConfirmationEmail(user.getEmail(), token);
+
+        return user;
     }
 
+    public void confirmEmail(String token) {
+        Optional<User> userOpt = userRepository.findByConfirmationToken(token);
+
+        if (userOpt.isEmpty()) {
+            throw new IllegalArgumentException("Invalid or expired confirmation token.");
+        }
+
+        User user = userOpt.get();
+        user.setConfirmed(true);
+        user.setConfirmationToken(null);
+        userRepository.update(user);
+    }
 
 
     public LoginResponse verify(LoginRequest loginRequest) {
         try {
+            // Benutzer aus der Datenbank abrufen
+            User user = userRepository.findByUsername(loginRequest.getUsername())
+                    .orElseThrow(() -> new UsernameNotFoundException("username or email not found"));
+
+            // Überprüfen, ob die E-Mail des Benutzers bestätigt wurde
+            if (!user.isConfirmed()) {
+                throw new EmailNotConfirmedException("Bitte bestätigen Sie zuerst Ihre E-Mail.");
+            }
+
+            // Authentifizierung mit dem Passwort
             Authentication authenticate = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword())
             );
@@ -62,15 +102,12 @@ public class AuthService {
             if (authenticate.isAuthenticated()) {
                 String token = jwtService.generateToken(loginRequest.getUsername());
 
-                User userLogged = userRepository.findByUsername(loginRequest.getUsername())
-                        .orElseThrow(() -> new UsernameNotFoundException("username or email not found"));
-
-                return new LoginResponse(token, userLogged.getUsername(), userLogged.getRole());
+                return new LoginResponse(token, user.getUsername(), user.getRole());
             } else {
                 throw new BadCredentialsException("Username or password is incorrect");
             }
         } catch (AuthenticationException ex) {
-            // throw, damit GlobalExceptionHandler sie abfangen kann
+            // Die Ausnahme wird vom GlobalExceptionHandler abgefangen
             throw ex;
         }
     }

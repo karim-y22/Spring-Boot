@@ -14,6 +14,13 @@ import java.util.stream.Collectors;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    @ExceptionHandler(EmailNotConfirmedException.class)
+    public ResponseEntity<ErrorResponse> handleEmailNotConfirmed(EmailNotConfirmedException ex) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                .body(new ErrorResponse(ex.getMessage()));
+    }
+
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<?> handleValidationErrors(MethodArgumentNotValidException ex) {
         List<ValidationError> errors = ex.getBindingResult()
@@ -26,12 +33,10 @@ public class GlobalExceptionHandler {
         List<ValidationError> globalErrors = ex.getBindingResult()
                 .getGlobalErrors()
                 .stream()
-                // Für GlobalErrors gibt es kein Feld, gib z.B. "global" oder "" als Feldnamen
                 .map(err -> new ValidationError(err.getObjectName(), err.getDefaultMessage()))
                 .collect(Collectors.toList());
 
         errors.addAll(globalErrors);
-
 
         return ResponseEntity.badRequest().body(new ValidationErrorResponse(errors));
     }

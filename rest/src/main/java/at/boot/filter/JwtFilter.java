@@ -15,9 +15,16 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 @Component
-public class JwtFilter  extends OncePerRequestFilter {
+public class JwtFilter extends OncePerRequestFilter {
+
+    private static final String[] PUBLIC_ENDPOINTS = {
+            "/auth/login",
+            "/auth/register",
+            "/auth/confirm"
+    };
 
     @Autowired
     private JWTService jwtService;
@@ -61,7 +68,6 @@ public class JwtFilter  extends OncePerRequestFilter {
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
         String path = request.getServletPath();
-        return path.startsWith("/auth/login/") || path.startsWith("/auth/register");
+        return Arrays.stream(PUBLIC_ENDPOINTS).anyMatch(path::startsWith);
     }
-
 }

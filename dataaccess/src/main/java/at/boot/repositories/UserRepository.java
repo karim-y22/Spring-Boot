@@ -22,6 +22,13 @@ public class UserRepository {
     }
 
     @Transactional
+    public Optional<User> findByConfirmationToken(String token) {
+        var query = em.createQuery("SELECT u FROM User u WHERE u.confirmationToken = :token", User.class);
+        query.setParameter("token", token);
+        return query.getResultStream().findFirst();
+    }
+
+    @Transactional
     public User saveNew(User user) {
         if (user.getId() != null) {
             throw new IllegalArgumentException("New user must not have an ID.");
