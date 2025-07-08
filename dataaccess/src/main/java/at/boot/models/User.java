@@ -7,6 +7,7 @@ import lombok.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+@Builder
 @Getter
 @Setter
 @AllArgsConstructor
@@ -14,7 +15,6 @@ import java.time.LocalDateTime;
 @ToString
 @Entity
 @Table(name = "app_user")
-
 public class User {
 
     @Id
@@ -33,6 +33,9 @@ public class User {
     private String lastname;
 
     private Integer age;
+
+    @Column(name = "phone_number", length = 20)
+    private String phoneNumber;
 
     @Column(name = "birthdate")
     private LocalDate dateOfBirth;

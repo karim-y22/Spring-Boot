@@ -23,6 +23,11 @@
             <artifactId>dataaccess</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>at.boot</groupId>
+            <artifactId>utils</artifactId>
+        </dependency>
+
 
         <!--#############################  Dependencies ################################################## -->
 
@@ -40,7 +45,6 @@
 
 
     </dependencies>
-
 
 
 </project>
