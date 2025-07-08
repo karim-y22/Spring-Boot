@@ -27,7 +27,7 @@ public class DevJpaConfig {
     @Value("${db.password}")
     private String password;
 
-    @Bean
+    @Bean(name = "dataSource")
     public DataSource dataSource() {
         DriverManagerDataSource ds = new DriverManagerDataSource();
         ds.setDriverClassName(driver);

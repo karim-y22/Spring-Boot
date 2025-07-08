@@ -29,6 +29,13 @@ public class UserRepository {
     }
 
     @Transactional
+    public Optional<User> findById(Long id) {
+        User user = em.find(User.class, id);
+        return Optional.ofNullable(user);
+    }
+
+
+    @Transactional
     public User saveNew(User user) {
         if (user.getId() != null) {
             throw new IllegalArgumentException("New user must not have an ID.");

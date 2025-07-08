@@ -23,7 +23,9 @@ public class JwtFilter extends OncePerRequestFilter {
     private static final String[] PUBLIC_ENDPOINTS = {
             "/auth/login",
             "/auth/register",
-            "/auth/confirm"
+            "/auth/confirm",
+            "/engine-rest/**",
+            "/camunda/app/**"
     };
 
     @Autowired
