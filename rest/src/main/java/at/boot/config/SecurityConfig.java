@@ -34,7 +34,8 @@ public class SecurityConfig {
             "/auth/register",
             "/auth/confirm",
             "/engine-rest/**",
-            "/camunda/app/**"
+            "/camunda/app/**",
+            "/camunda/**",
     };
 
 
