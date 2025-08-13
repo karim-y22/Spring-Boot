@@ -32,10 +32,7 @@ public class SecurityConfig {
     private static final String[] PUBLIC_ENDPOINTS = {
             "/auth/login",
             "/auth/register",
-            "/auth/confirm",
-            "/engine-rest/**",
-            "/camunda/app/**",
-            "/camunda/**",
+            "/auth/confirm"
     };
 
 

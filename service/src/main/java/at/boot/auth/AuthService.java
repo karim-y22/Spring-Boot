@@ -63,15 +63,10 @@ public class AuthService {
         // Speichern
         userRepository.saveNew(user);
 
+        // Bestätigungsmail senden
+        mailService.sendConfirmationEmail(user.getEmail(), token);
+
         return user;
-    }
-
-    public void sendConfirmationMail(String email, String token) {
-        mailService.sendConfirmationEmail(email, token);
-    }
-
-    public User findUserById(Long id) {
-        return userRepository.findById(id).orElse(null);
     }
 
     public void confirmEmail(String token) {
