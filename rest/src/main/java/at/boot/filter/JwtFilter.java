@@ -23,7 +23,9 @@ public class JwtFilter extends OncePerRequestFilter {
     private static final String[] PUBLIC_ENDPOINTS = {
             "/auth/login",
             "/auth/register",
-            "/auth/confirm"
+            "/auth/confirm",
+            "/auth/forgot",
+            "/auth/reset-password"
     };
 
     @Autowired
@@ -41,6 +43,7 @@ public class JwtFilter extends OncePerRequestFilter {
         String token = null;
         String username = null;
 
+        // Bearer-Token extrahieren, falls vorhanden
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             token = authHeader.substring(7);
             username = jwtService.extractUserName(token);
@@ -51,6 +54,7 @@ public class JwtFilter extends OncePerRequestFilter {
         }
 
 
+        // Token validieren und Authentication setzen
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
             UserDetails userDetails = userDetailsService.loadUserByUsername(username);
@@ -62,12 +66,15 @@ public class JwtFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(authToken);
             }
         }
+
+        // Nächsten Filter aufrufen
         filterChain.doFilter(request, response);
     }
 
     @Override
-    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+    protected boolean shouldNotFilter(HttpServletRequest request) {
         String path = request.getServletPath();
+        // Öffentliche Pfade durchlassen
         return Arrays.stream(PUBLIC_ENDPOINTS).anyMatch(path::startsWith);
     }
 }

@@ -34,6 +34,11 @@ public class User {
 
     private Integer age;
 
+    @Column(name = "forgot_password_token")
+    private String forgotPasswordToken;
+    @Column(name = "forgot_password_token_expiry_time_and_date")
+    private LocalDateTime forgotPasswordTokenExpiry;
+
     @Column(name = "phone_number", length = 20)
     private String phoneNumber;
 

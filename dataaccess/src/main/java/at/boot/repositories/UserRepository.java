@@ -22,6 +22,20 @@ public class UserRepository {
     }
 
     @Transactional
+    public Optional<User> findByEmail(String email) {
+        var query = em.createQuery("SELECT u FROM User u WHERE u.email = :email", User.class);
+        query.setParameter("email", email);
+        return query.getResultStream().findFirst();
+    }
+
+    @Transactional
+    public Optional<User> findByForgotPasswordToken(String token) {
+        var query = em.createQuery("SELECT u FROM User u WHERE u.forgotPasswordToken = :token", User.class);
+        query.setParameter("token", token);
+        return query.getResultStream().findFirst();
+    }
+
+    @Transactional
     public Optional<User> findByConfirmationToken(String token) {
         var query = em.createQuery("SELECT u FROM User u WHERE u.confirmationToken = :token", User.class);
         query.setParameter("token", token);

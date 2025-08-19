@@ -32,7 +32,9 @@ public class SecurityConfig {
     private static final String[] PUBLIC_ENDPOINTS = {
             "/auth/login",
             "/auth/register",
-            "/auth/confirm"
+            "/auth/confirm",
+            "/auth/forgot",
+            "/auth/reset-password"
     };
 
 
@@ -81,7 +83,7 @@ public class SecurityConfig {
         config.setAllowedOrigins(List.of(allowedOrigins.split(",")));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD"));
         config.setAllowedHeaders(List.of("Origin", "Content-Type", "Accept", "Authorization"));
-        config.setAllowCredentials(true);
+        //config.setAllowCredentials(true);
         config.setMaxAge(1209600L);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

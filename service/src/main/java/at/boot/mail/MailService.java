@@ -34,6 +34,9 @@ public class MailService {
     @Value("${app.confirmation.url}")
     private String confirmationUrl;
 
+    @Value("${app.forgotpassword.url}")
+    private String forgotPasswordUrl;
+
     private Session mailSession;
 
     @PostConstruct
@@ -62,6 +65,17 @@ public class MailService {
         String confirmationLink = confirmationUrl + token;
         String subject = "Willkommen bei SliceIt – Bitte bestätige deine Registrierung";
         String htmlContent = loadTemplate("confirmation-email.html", confirmationLink);
+        return sendEmail(recipient, subject, htmlContent);
+    }
+
+    public boolean sendForgotPasswordEmail(String recipient, String token) {
+        if (forgotPasswordUrl == null || forgotPasswordUrl.isBlank()) {
+            throw new RuntimeException("Property app.forgotpassword.url nicht gesetzt!");
+        }
+
+        String resetLink = forgotPasswordUrl + token;
+        String subject = "Passwort zurücksetzen – SliceIt";
+        String htmlContent = loadTemplate("forgot-password-email.html", resetLink);
         return sendEmail(recipient, subject, htmlContent);
     }
 

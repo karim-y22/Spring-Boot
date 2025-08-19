@@ -45,7 +45,7 @@ public class DevJpaConfig {
         emf.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
 
         Properties jpaProps = new Properties();
-        jpaProps.put("hibernate.hbm2ddl.auto", "create");
+        jpaProps.put("hibernate.hbm2ddl.auto", "update");
         jpaProps.put("hibernate.show_sql", "true");
         jpaProps.put("hibernate.format_sql", "true");
         emf.setJpaProperties(jpaProps);
